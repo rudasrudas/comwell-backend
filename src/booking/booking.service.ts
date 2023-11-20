@@ -28,10 +28,10 @@ export class BookingService {
   }
 
   async getBookingsByUser(userId: Types.ObjectId | string): Promise<Booking[]> {
-    return this.bookingModel.find({ user: userId }).exec();
+    return this.bookingModel.find({ user: userId }).populate('user hotel rooms.room').exec();
   }
 
   async getAllBookings(): Promise<Booking[]> {
-    return this.bookingModel.find().exec();
+    return this.bookingModel.find().populate('user hotel rooms.room').exec();
   }
 }
