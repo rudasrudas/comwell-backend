@@ -28,8 +28,8 @@ export interface Booking extends Document {
 }
 
 export const BookingSchema = new Schema({
-  user: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // Assuming 'User' is your user model
-  hotel: { type: Schema.Types.ObjectId, ref: 'Hotel', required: true }, // Assuming 'Hotel' is your hotel model
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  hotel: { type: Schema.Types.ObjectId, ref: 'Hotel', required: true },
   dates: {
     start: { type: Date, required: true },
     end: { type: Date, required: true },
@@ -39,7 +39,7 @@ export const BookingSchema = new Schema({
       adult: { type: Number, required: true },
       children: { type: Number, required: true },
       toddler: { type: Number, required: true },
-      room: { type: Schema.Types.ObjectId, ref: 'Room', required: true }, // Assuming 'Room' is your room model
+      room: { type: Schema.Types.ObjectId, ref: 'Room', required: true },
     },
   ],
 	personalInfo: {
