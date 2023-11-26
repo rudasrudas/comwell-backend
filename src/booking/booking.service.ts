@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Booking, Room } from './booking.schema';
+import { Booking, Room, PersonalInfo } from './booking.schema';
 import { Types } from 'mongoose';
 
 @Injectable()
@@ -15,12 +15,14 @@ export class BookingService {
     hotel: Types.ObjectId | string,
     dates: { start: Date; end: Date },
     rooms: Array<Room>,
+    personalInfo: Types.ObjectId |string,
   ): Promise<Booking> {
     const booking = new this.bookingModel({
       user,
       hotel,
       dates,
       rooms,
+      personalInfo,
       registrationDate: new Date(),
     });
 
