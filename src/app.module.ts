@@ -13,7 +13,7 @@ import { BookingModule } from './booking/booking.module';
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGO_URI),
     AuthModule,
-    BookingModule
+    BookingModule,
   ],
   controllers: [],
   providers: []

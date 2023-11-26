@@ -56,9 +56,54 @@ export class AuthService {
     }
 
     const token = this.generateToken(user);
-
-    return { userId: user._id, email: user.email, token };
+    return { userId: user._id, email: user.email,  name: user.name, phoneNumber : user.phoneNumber, token };
   }
+
+  async findByEmail(credentials: any): Promise<any> {
+    const { email, password } = credentials;
+
+    // Find the user by email
+    const user = await this.userModel.findOne({ email });
+
+    // Check if the user exists
+    if (!user) {
+      throw new BadRequestException('Invalid credentials');
+    }
+
+    // Compare the provided password with the hashed password in the database
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    // Check if the passwords match
+    if (!passwordMatch) {
+      throw new BadRequestException('Invalid credentials');
+    }
+
+    const token = this.generateToken(user);
+    return {user}
+  }
+
+  async findByToken(credentials: any): Promise<any> {
+    const { token } = credentials;
+    try {
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+
+      const userId = decodedToken.sub;
+
+      const user = await this.userModel.findById(userId);
+
+      // Check if the user exists
+      if (!user) {
+        throw new BadRequestException('Invalid credentials');
+      }
+
+      return { user };
+    } catch (error) {
+      // Handle token verification errors
+      console.error('Error verifying token:', error);
+      throw new BadRequestException('Invalid credentials');
+    }
+  }
+
 
 	private generateToken(user: User): string {
     const payload = { sub: user._id, email: user.email };
