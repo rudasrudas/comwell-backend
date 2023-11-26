@@ -16,8 +16,8 @@ export interface PersonalInfo {
 }
 
 export interface Booking extends Document {
-  user: Types.ObjectId | string; // Reference to the user who made the booking
-  hotel: Types.ObjectId | string; // Reference to the hotel
+  user: Types.ObjectId | string;
+  hotel: Types.ObjectId | string;
   dates: {
     start: Date;
     end: Date;
