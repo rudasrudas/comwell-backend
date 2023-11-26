@@ -1,9 +1,9 @@
 import { Schema, Document, Types } from 'mongoose';
 
 export interface Room extends Document {
-  adult: number;
+  adults: number;
   children: number;
-  toddler: number;
+  toddlers: number;
   room: Types.ObjectId | string;
 }
 
@@ -36,9 +36,9 @@ export const BookingSchema = new Schema({
   },
   rooms: [
     {
-      adult: { type: Number, required: true },
+      adults: { type: Number, required: true },
       children: { type: Number, required: true },
-      toddler: { type: Number, required: true },
+      toddlers: { type: Number, required: true },
       room: { type: Schema.Types.ObjectId, ref: 'Room', required: true },
     },
   ],

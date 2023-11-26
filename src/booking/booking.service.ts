@@ -15,7 +15,7 @@ export class BookingService {
     hotel: Types.ObjectId | string,
     dates: { start: Date; end: Date },
     rooms: Array<Room>,
-    personalInfo: Types.ObjectId |string,
+    personalInfo: Types.ObjectId | string,
   ): Promise<Booking> {
     const booking = new this.bookingModel({
       user,
