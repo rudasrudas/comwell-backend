@@ -6,6 +6,8 @@ import { AuthModule } from './auth/auth.module';
 import { BookingController } from './booking/booking.controller';
 import { BookingService } from './booking/booking.service';
 import { BookingModule } from './booking/booking.module';
+import { PartyModule } from './party/party.module';
+import { ConferenceModule } from './conference/conference.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { BookingModule } from './booking/booking.module';
     MongooseModule.forRoot(process.env.MONGO_URI),
     AuthModule,
     BookingModule,
+    PartyModule,
+    ConferenceModule
   ],
   controllers: [],
   providers: []
