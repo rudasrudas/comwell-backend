@@ -1,10 +1,10 @@
-// auth/auth.service.ts
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, Res } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '../user/user.schema';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -36,29 +36,39 @@ export class AuthService {
     return { userId: savedUser._id, email: savedUser.email };
   }
 
-  async login(credentials: any): Promise<any> {
+  async login(credentials: any, @Res() res: Response): Promise<any> {
     const { email, password } = credentials;
-
+  
+    console.log('Received credentials:', email, password);
+  
     // Find the user by email
     const user = await this.userModel.findOne({ email });
-
+  
     // Check if the user exists
     if (!user) {
+      console.log('User not found');
       throw new BadRequestException('Invalid credentials');
     }
-
+  
     // Compare the provided password with the hashed password in the database
     const passwordMatch = await bcrypt.compare(password, user.password);
-
+  
+    console.log('Password match:', passwordMatch);
+  
     // Check if the passwords match
     if (!passwordMatch) {
+      console.log('Invalid credentials');
       throw new BadRequestException('Invalid credentials');
     }
-
+  
     const token = this.generateToken(user);
-    return { userId: user._id, email: user.email,  name: user.name, phoneNumber : user.phoneNumber, token };
+  
+    // Set the JWT token as an HTTP-only cookie in the response
+    res.cookie('access_token', token, { httpOnly: true });
+  
+    // Return relevant information
+    return { userId: user._id, email: user.email, name: user.name, phoneNumber: user.phoneNumber, token };
   }
-
   async findByEmail(credentials: any): Promise<any> {
     const { email, password } = credentials;
 
@@ -79,7 +89,7 @@ export class AuthService {
     }
 
     const token = this.generateToken(user);
-    return {user}
+    return { user };
   }
 
   async findByToken(credentials: any): Promise<any> {
@@ -104,8 +114,7 @@ export class AuthService {
     }
   }
 
-
-	private generateToken(user: User): string {
+  private generateToken(user: User): string {
     const payload = { sub: user._id, email: user.email };
     const secretKey = process.env.JWT_SECRET;
     const expiresIn = '1h';
