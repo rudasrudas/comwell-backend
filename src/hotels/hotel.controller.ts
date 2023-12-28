@@ -10,4 +10,5 @@ export class HotelController {
   async findAll(): Promise<Hotel[]> {
     return this.hotelService.findAll();
   }
+
 }
