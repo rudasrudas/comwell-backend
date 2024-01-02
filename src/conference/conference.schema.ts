@@ -18,6 +18,10 @@ export interface Conference extends Document {
     start: Date;
     end: Date;
   };
+  times: {
+    start: Date;
+    end: Date;
+  };
   numberOfParticipants: Number;
   registrationDate: Date;
   personalInfo: BookersInfo;
@@ -31,6 +35,10 @@ export const ConferenceSchema = new Schema({
     start: { type: Date, required: true },
     end: { type: Date, required: true },
   },
+  times: {
+    start: { type: Date, required: true },
+    end: { type: Date, required: true },
+  },
   bookersInfo: {
     company: { type: String, required: true },
     department: { type: String, required: false },
@@ -41,4 +49,5 @@ export const ConferenceSchema = new Schema({
     comment: { type: String, required: false },
   },
   registrationDate: { type: Date, default: Date.now },
+  interestedInAccommodation : {type: Boolean, required : false}
 });
