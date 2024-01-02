@@ -1,4 +1,3 @@
-// auth/auth.controller.ts
 import { Controller, Post, Body, Res, Get, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
@@ -35,13 +34,11 @@ export class AuthController {
         res.send({ message: 'Login successful', result });
       } else {
         
-        res.send({ message: 'Login failed' });
+        res.status(401).json({ message: 'Unauthorized' });
       }
     } catch (error) {
-      //res.statusCode = ###
+      res.status(401).json({ message: 'Invalid credentials' });
       console.error('Login failed. Error:', error);
-
-      res.send({ message: 'Login failed', result: error.message });
     }
   }
 

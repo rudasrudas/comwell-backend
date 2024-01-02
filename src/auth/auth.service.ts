@@ -67,7 +67,7 @@ export class AuthService {
     res.cookie('access_token', token, { httpOnly: true });
   
     // Return relevant information
-    return { userId: user._id, email: user.email, name: user.name, phoneNumber: user.phoneNumber, token };
+    return { userId: user._id, email: user.email, name: user.name, phoneNumber: user.phoneNumber };
   }
   async findByEmail(credentials: any): Promise<any> {
     const { email, password } = credentials;
