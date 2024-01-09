@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Param, Body } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { PartyService } from './party.service';
 import { Party } from './party.schema';
 import { Types } from 'mongoose';
@@ -17,24 +17,21 @@ export class PartyController {
     @Body('interestedInAccommodation') interestedInAccommodation: boolean,
     @Body('bookersInfo') bookersInfo: Types.ObjectId | string,
   ): Promise<Party> {
-    return this.partyService.createPartyInquiry(
-      user,
-      arrangement,
-      numberOfParticipants,
-      hotels,
-      dates,
-      interestedInAccommodation,
-      bookersInfo,
-    );
+    try {
+      const result = await this.partyService.createPartyInquiry(
+        user,
+        arrangement,
+        numberOfParticipants,
+        hotels,
+        dates,
+        interestedInAccommodation,
+        bookersInfo,
+      );
+      return result;
+    } catch (error) {
+      console.error('Error creating party inquiry:', error.message);
+      throw new Error('Failed to create party inquiry. Please check your input.');
+    }
   }
-
-//   @Get(':userId')
-//   async getPartiesByUser(@Param('userId') userId: Types.ObjectId | string): Promise<Party[]> {
-//     return this.partyService.getPartiesByUser(userId);
-//   }
-
-//   @Get()
-//   async getAllParties(): Promise<Party[]> {
-//     return this.partyService.getAllParties();
-//   }
 }
+
